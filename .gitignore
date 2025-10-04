@@ -1,2 +1,4 @@
 .osp/
 vendor/
+.env
+phinx.php

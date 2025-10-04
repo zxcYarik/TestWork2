@@ -1,7 +1,12 @@
-    {
-        "autoload": {
-            "psr-4": {
-                "Local\\": "src/"
-            }
+{
+    "require": {
+        "symfony/console": "^7.3",
+        "symfony/dotenv": "^7.3",
+        "robmorgan/phinx": "^0.16.10"
+    },
+    "autoload": {
+        "psr-4": {
+            "Local\\": "src/"
         }
     }
+}

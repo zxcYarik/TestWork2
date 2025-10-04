@@ -17,3 +17,9 @@ sort (целое число).
 
 sortBySort() — сортирует товары по полю sort по возрастанию;
 sortByName() — сортирует товары по полю name в алфавитном порядке.
+
+Команда для инициализации phinx - php vendor/robmorgan/phinx/bin/phinx init
+
+Команда для установки миграций - php vendor/robmorgan/phinx/bin/phinx migrate
+
+Команды для установки сидов: php vendor/robmorgan/phinx/bin/phinx seed:run
