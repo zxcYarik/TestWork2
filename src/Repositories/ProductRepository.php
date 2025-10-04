@@ -1,39 +1,47 @@
 <?php
 namespace Local\Repositories;
 
+use PDO;
+use Local\Models\Product;
+
 class ProductRepository {
-    private $products;
+    private array $products = [];
 
-    public function __construct($products) {
-        $this->products = $products;
+    public function __construct(PDO $pdo) {
+        $this->loadProductsFromDatabase($pdo);
     }
 
-    public function getProductsSortedBySort() {
+    private function loadProductsFromDatabase(PDO $pdo): void {
+        $stmt = $pdo->query("SELECT * FROM product");
+        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        foreach ($rows as $row) {
+            $this->products[] = new Product(
+                $row['id'],
+                $row['code'],
+                $row['name'],
+                $row['sort']
+            );
+        }
+    }
+
+    public function getProductsSortedBySort(): array {
         $sorted = $this->products;
-        usort($sorted, array($this, "compareBySort"));
+        usort($sorted, function(Product $a, Product $b) {
+            return $a->sort <=> $b->sort;
+        });
         return $sorted;
     }
 
-    public function getProductsSortedByName() {
+    public function getProductsSortedByName(): array {
         $sorted = $this->products;
-        usort($sorted, array($this, "compareByName"));
+        usort($sorted, function(Product $a, Product $b) {
+            return strcmp($a->name, $b->name);
+        });
         return $sorted;
     }
 
-    private function compareBySort($a, $b) {
-        if ($a->sort == $b->sort) {
-            return 0;
-        }
-        return ($a->sort < $b->sort) ? -1 : 1;
-    }
-
-    private function compareByName($a, $b) {
-        return strcmp($a->name, $b->name);
-    }
-
-    public function printProducts($products) {
-        foreach ($products as $product) {
-            $product->printInfo();
-        }
+    public function getAllProducts(): array {
+        return $this->products;
     }
 }

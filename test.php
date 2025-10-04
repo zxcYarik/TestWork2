@@ -1,19 +1,22 @@
 <?php
 
-require_once('vendor/autoload.php');
+require_once 'vendor/autoload.php';
+
+use Local\Repositories\ProductRepository;
+use Local\Models\Product;
 
 require 'db.php';
 
+$repository = new ProductRepository($pdo);
+
 echo "Товары, отсортированные по полю sort:<br>";
-$stmt = $pdo->query('SELECT * FROM product ORDER BY sort');
-$products = $stmt->fetchAll();
-foreach ($products as $p) {
-    echo "ID: {$p['id']}, Code: {$p['code']}, Name: {$p['name']}, Sort: {$p['sort']}<br>";
+$productsBySort = $repository->getProductsSortedBySort();
+foreach ($productsBySort as $product) {
+    echo "ID: {$product->id}, Code: {$product->code}, Name: {$product->name}, Sort: {$product->sort}<br>";
 }
 
 echo "<br>Товары, отсортированные по имени:<br>";
-$stmt = $pdo->query('SELECT * FROM product ORDER BY name');
-$products = $stmt->fetchAll();
-foreach ($products as $p) {
-    echo "ID: {$p['id']}, Code: {$p['code']}, Name: {$p['name']}, Sort: {$p['sort']}<br>";
+$productsByName = $repository->getProductsSortedByName();
+foreach ($productsByName as $product) {
+    echo "ID: {$product->id}, Code: {$product->code}, Name: {$product->name}, Sort: {$product->sort}<br>";
 }
